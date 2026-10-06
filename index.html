@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交換生歐洲旅行推薦器 | UIBK 2027SS 專用</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .gradient-btn {
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #7c3aed 100%);
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+        }
+        .gradient-btn:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #4338ca 50%, #6d28d9 100%);
+            box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-full flex flex-col text-slate-800 antialiased">
+
+    <header class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-brand-500/30">
+                    <i class="fa-solid fa-compass"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight">交換生歐洲旅行推薦器</h1>
+                        <span class="text-[10px] uppercase font-bold px-2 py-0.5 bg-amber-400 text-slate-950 rounded-md">2027 春季版</span>
+                    </div>
+                    <p class="text-xs text-slate-300 mt-0.5">專為因斯布魯克大學 (UIBK) 交換學生設計的彈性旅程試算工具</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-xs bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/10">
+                <i class="fa-solid fa-calendar-week text-amber-300"></i>
+                <span>UIBK 學期日程：2027/02/15 - 2027/07/29</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column: Input Form (5 cols) -->
+        <section class="lg:col-span-5 space-y-6">
+            <div class="bg-white rounded-2xl p-6 sm:p-7 shadow-sm border border-slate-200/80 sticky top-6">
+                <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-100">
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-brand-600"></i>
+                        旅行條件與偏好設定
+                    </h2>
+                    <span class="text-xs text-slate-400 font-medium">個人化比對</span>
+                </div>
+
+                <form id="recommendForm" onsubmit="event.preventDefault(); calculateRecommendations();" class="space-y-5">
+                    
+                    <!-- 1. 旅行總預算 -->
+                    <div>
+                        <label for="budget" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                            <i class="fa-solid fa-wallet text-slate-400 mr-1.5"></i>旅行總預算 (NTD)
+                        </label>
+                        <select id="budget" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 font-medium focus:ring-2 focus:ring-brand-500 focus:bg-white focus:outline-none transition">
+                            <option value="10000-20000">NT$ 10,000 ～ 20,000 (小資省錢/快閃)</option>
+                            <option value="20000-30000" selected>NT$ 20,000 ～ 30,000 (標準平衡預算)</option>
+                            <option value="30000-40000">NT$ 30,000 ～ 40,000 (充裕渡假/中長途)</option>
+                            <option value="40000+">NT$ 40,000 以上 (高質感深度遊)</option>
+                        </select>
+                        <p class="text-[11px] text-slate-400 mt-1">包含自因斯布魯克出發之來回交通、住宿、餐飲與景點</p>
+                    </div>
+
+                    <!-- 2. 旅行天數 -->
+                    <div>
+                        <label for="days" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                            <i class="fa-solid fa-calendar-days text-slate-400 mr-1.5"></i>預計旅行天數
+                        </label>
+                        <select id="days" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 font-medium focus:ring-2 focus:ring-brand-500 focus:bg-white focus:outline-none transition">
+                            <option value="1-2">1～2 天 (週末鄰近快閃)</option>
+                            <option value="3-4" selected>3～4 天 (連假精華暢遊)</option>
+                            <option value="5-7">5～7 天 (跨區縱深之旅)</option>
+                            <option value="8+">8 天以上 (多國深度巡禮)</option>
+                        </select>
+                    </div>
+
+                    <!-- 3. 必去城市 (心目中指定) -->
+                    <div>
+                        <label for="mustVisitCity" class="block text-sm font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
+                            <span><i class="fa-solid fa-star text-amber-500 mr-1.5"></i>心目中必去城市 (可選)</span>
+                            <span class="text-[11px] text-slate-400 font-normal">評估條件落差</span>
+                        </label>
+                        <select id="mustVisitCity" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 font-medium focus:ring-2 focus:ring-brand-500 focus:bg-white focus:outline-none transition">
+                            <option value="">-- 無特別指定 (全自動最佳化推薦) --</option>
+                            <option value="Paris">巴黎 (Paris, 法國)</option>
+                            <option value="London">倫敦 (London, 英國)</option>
+                            <option value="Venice">威尼斯 (Venice, 義大利)</option>
+                            <option value="Prague">布拉格 (Prague, 捷克)</option>
+                            <option value="Rome">羅馬 (Rome, 義大利)</option>
+                            <option value="Barcelona">巴塞隆納 (Barcelona, 西班牙)</option>
+                            <option value="Vienna">維也納 (Vienna, 奧地利)</option>
+                            <option value="Amsterdam">阿姆斯特丹 (Amsterdam, 荷蘭)</option>
+                            <option value="Munich">慕尼黑 (Munich, 德國)</option>
+                            <option value="Zurich">蘇黎世 (Zurich, 瑞士)</option>
+                            <option value="Budapest">布達佩斯 (Budapest, 匈牙利)</option>
+                            <option value="Florence">佛羅倫斯 (Florence, 義大利)</option>
+                        </select>
+                    </div>
+
+                    <!-- 4. 旅行偏好 (多選 Checkboxes) -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-sm font-semibold text-slate-700">
+                                <i class="fa-solid fa-heart text-slate-400 mr-1.5"></i>旅行偏好 (最多 3 項)
+                            </label>
+                            <span class="text-xs text-brand-600 font-medium" id="prefCounter">已選 2 / 3 項</span>
+                        </div>
+                        <div id="preferences" class="grid grid-cols-2 gap-2 text-xs sm:text-sm">
+                            <label class="flex items-center p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/60 cursor-pointer transition select-none">
+                                <input type="checkbox" value="自然" class="pref-checkbox rounded text-brand-600 focus:ring-brand-500 mr-2 h-4 w-4"> 🌲 自然風光
+                            </label>
+                            <label class="flex items-center p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/60 cursor-pointer transition select-none">
+                                <input type="checkbox" value="歷史文化" class="pref-checkbox rounded text-brand-600 focus:ring-brand-500 mr-2 h-4 w-4" checked> 🏰 歷史文化
+                            </label>
+                            <label class="flex items-center p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/60 cursor-pointer transition select-none">
+                                <input type="checkbox" value="著名景點" class="pref-checkbox rounded text-brand-600 focus:ring-brand-500 mr-2 h-4 w-4" checked> 📸 著名景點
+                            </label>
+                            <label class="flex items-center p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/60 cursor-pointer transition select-none">
+                                <input type="checkbox" value="美食" class="pref-checkbox rounded text-brand-600 focus:ring-brand-500 mr-2 h-4 w-4"> 🍕 特色美食
+                            </label>
+                            <label class="flex items-center p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/60 cursor-pointer transition select-none">
+                                <input type="checkbox" value="城市購物" class="pref-checkbox rounded text-brand-600 focus:ring-brand-500 mr-2 h-4 w-4"> 🛍️️ 城市購物
+                            </label>
+                            <label class="flex items-center p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/60 cursor-pointer transition select-none">
+                                <input type="checkbox" value="悠閒放鬆" class="pref-checkbox rounded text-brand-600 focus:ring-brand-500 mr-2 h-4 w-4"> ☕ 悠閒放鬆
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 5. 交通偏好 (修復互動與點擊響應) -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+                            <i class="fa-solid fa-train text-slate-400 mr-1.5"></i>交通偏好
+                        </label>
+                        <div class="grid grid-cols-3 gap-2 text-xs sm:text-sm">
+                            <label class="transport-label cursor-pointer text-center p-2.5 border rounded-xl bg-slate-50 border-slate-200 font-semibold transition select-none block">
+                                <input type="radio" name="transport" value="省錢優先" class="hidden">
+                                <span>💰 省錢優先</span>
+                            </label>
+                            <label class="transport-label cursor-pointer text-center p-2.5 border rounded-xl bg-brand-50 border-brand-600 text-brand-700 font-bold transition select-none block">
+                                <input type="radio" name="transport" value="平衡" class="hidden" checked>
+                                <span>⚖️ 平衡考量</span>
+                            </label>
+                            <label class="transport-label cursor-pointer text-center p-2.5 border rounded-xl bg-slate-50 border-slate-200 font-semibold transition select-none block">
+                                <input type="radio" name="transport" value="時間優先" class="hidden">
+                                <span>⚡ 時間優先</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 6. 預估每週上課天數 -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2">
+                        <label for="classDays" class="block text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-graduation-cap text-brand-600"></i> 預估每週上課天數
+                        </label>
+                        <div class="flex items-center gap-3">
+                            <input type="number" id="classDays" min="0" max="7" value="2" class="w-24 bg-white border border-slate-200 rounded-lg p-2 text-center font-bold text-slate-800 text-base focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <span class="text-xs text-slate-500">天天連假或上課 2~3 天通常最容易安排快閃出遊</span>
+                        </div>
+                    </div>
+
+                    <!-- 7. 顯眼大亮點按鈕 (產生推薦目的地) -->
+                    <button type="submit" class="w-full gradient-btn text-white font-extrabold py-4 px-6 rounded-2xl transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-3 text-lg tracking-wide border border-white/20">
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-xl animate-bounce"></i>
+                        <span>產生推薦目的地 (TOP 5)</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Right Column: Results Display (7 cols) -->
+        <section class="lg:col-span-7 space-y-6">
+            
+            <!-- Default Welcome Card -->
+            <div id="welcomeMessage" class="bg-white rounded-2xl p-8 sm:p-12 border border-slate-200/80 text-center space-y-4 shadow-sm">
+                <div class="w-20 h-20 bg-brand-50 text-brand-600 rounded-2xl flex items-center justify-center mx-auto text-3xl shadow-inner border border-brand-100">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </div>
+                <div class="max-w-md mx-auto space-y-2">
+                    <h3 class="text-xl font-bold text-slate-900">準備好開啟您的歐洲交換之旅了嗎？</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">按下左側「<b>產生推薦目的地</b>」按鈕，系統將自動為您評估最符合條件的 TOP 5 歐洲旅遊城市與預算分析！</p>
+                </div>
+            </div>
+
+            <!-- Must-Visit City Gap Analysis (Displaced Alert) -->
+            <div id="mustVisitGapContainer"></div>
+
+            <!-- Results Output Container -->
+            <div id="resultsContainer" class="space-y-6 hidden">
+                <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                    <div>
+                        <h2 class="text-xl font-black text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-trophy text-amber-500"></i> TOP 5 最佳推薦目的地
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">已綜合評估交通成本、天數限制、個人偏好及歐盟學生證福利</p>
+                    </div>
+                    <span class="text-xs bg-brand-50 text-brand-700 border border-brand-200 px-3 py-1 rounded-full font-bold">精算演算法完成</span>
+                </div>
+
+                <!-- TOP 5 Cards Container -->
+                <div id="cardsList" class="space-y-6"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs mt-auto border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-medium text-slate-300">Innsbruck Exchange Student European Travel Recommender</p>
+            <p class="mt-1 text-slate-500">特別針對 UIBK 2027 春季學期打造｜包含免額外申請之歐盟學生證景點優惠數據</p>
+        </div>
+    </footer>
+
+    <script>
+        // Handle Transport Radio Selection visual toggle
+        const transportLabels = document.querySelectorAll('.transport-label');
+        transportLabels.forEach(label => {
+            label.addEventListener('click', () => {
+                transportLabels.forEach(l => {
+                    l.classList.remove('bg-brand-50', 'border-brand-600', 'text-brand-700', 'font-bold');
+                    l.classList.add('bg-slate-50', 'border-slate-200', 'font-semibold');
+                    const radio = l.querySelector('input[type="radio"]');
+                    if (radio) radio.checked = false;
+                });
+                label.classList.remove('bg-slate-50', 'border-slate-200', 'font-semibold');
+                label.classList.add('bg-brand-50', 'border-brand-600', 'text-brand-700', 'font-bold');
+                const currentRadio = label.querySelector('input[type="radio"]');
+                if (currentRadio) currentRadio.checked = true;
+            });
+        });
+
+        // Limit maximum 3 checkboxes
+        const checkboxes = document.querySelectorAll('.pref-checkbox');
+        const prefCounter = document.getElementById('prefCounter');
+
+        checkboxes.forEach(box => {
+            box.addEventListener('change', () => {
+                const checked = document.querySelectorAll('.pref-checkbox:checked');
+                if (checked.length > 3) {
+                    box.checked = false;
+                    alert('旅行偏好最多只能選擇 3 項喔！');
+                }
+                const updatedChecked = document.querySelectorAll('.pref-checkbox:checked');
+                prefCounter.textContent = `已選 ${updatedChecked.length} / 3 項`;
+            });
+        });
+
+        // Comprehensive City Database (25 Cities)
+        const cityDatabase = [
+            {
+                id: "Paris",
+                name: "巴黎",
+                country: "法國",
+                transportType: "FLIXBUS / 廉價航空",
+                transportCost: 4200,
+                avgHotelPerNight: 2800,
+                avgFoodPerDay: 1500,
+                mainAttractionCost: 0, // 學生證免費
+                tags: ["歷史文化", "著名景點", "城市購物", "美食"],
+                suitableDays: [3, 4, 5, 6, 7, 8],
+                seasonality: { spring: 9.5 },
+                bestPeriod: "3-5月 春暖花開時節，氣候宜人適合漫步塞納河畔",
+                notes: "26歲以下憑歐盟學校學生證（如 UIBK 學生證）可享有大量景點免費！",
+                studentPerks: [
+                    "🎓 羅浮宮 (Musée du Louvre) 免費入場 (原價 €22)",
+                    "🎓 奧塞美術館 (Musée d'Orsay) 免費入場 (原價 €16)",
+                    "🎓 凡爾賽宮與宮殿花園 免費入場 (原價 €21)",
+                    "🎓 凱旋門觀景台 免費登頂 (原價 €16)"
+                ]
+            },
+            {
+                id: "London",
+                name: "倫敦",
+                country: "英國",
+                isUK: true,
+                transportType: "廉價航空 (EasyJet / RyanAir)",
+                transportCost: 5500,
+                avgHotelPerNight: 3200,
+                avgFoodPerDay: 1800,
+                mainAttractionCost: 1000,
+                tags: ["歷史文化", "著名景點", "城市購物"],
+                suitableDays: [4, 5, 6, 7, 8],
+                seasonality: { spring: 8.5 },
+                bestPeriod: "4-6月 白天時間變長，白金漢宮與公園綠意盎然",
+                notes: "非申根區，需持護照與提前申辦 UK ETA 電子許可。各大國立博物館均免費！",
+                studentPerks: [
+                    "🎓 大英博物館 (British Museum) 常設展完全免費",
+                    "🎓 國家畫廊 (National Gallery) 常設展完全免費",
+                    "🎓 泰特現代藝術館 (Tate Modern) 免費參觀",
+                    "🎓 西敏寺與倫敦塔享學生門票特惠"
+                ]
+            },
+            {
+                id: "Venice",
+                name: "威尼斯",
+                country: "義大利",
+                transportType: "ÖBB 直達夜車 (NJ) / 火車",
+                transportCost: 2200,
+                avgHotelPerNight: 2600,
+                avgFoodPerDay: 1400,
+                mainAttractionCost: 1200,
+                tags: ["歷史文化", "著名景點", "悠閒放鬆"],
+                suitableDays: [2, 3, 4],
+                seasonality: { spring: 9.0 },
+                bestPeriod: "2-4月 春季避開暑假擁擠人潮，因斯布魯克直達火車極其方便",
+                notes: "從因斯布魯克可搭乘火車直達！水上巴士與總督宮憑學生證享折價。",
+                studentPerks: [
+                    "🎓 總督宮 (Doge's Palace) 憑學生證享優惠票",
+                    "🎓 威尼斯雙年展 (Biennale) 享學生優惠票"
+                ]
+            },
+            {
+                id: "Munich",
+                name: "慕尼黑",
+                country: "德國",
+                transportType: "ÖBB/DB 直達火車 (僅1.5小時)",
+                transportCost: 900,
+                avgHotelPerNight: 2200,
+                avgFoodPerDay: 1200,
+                mainAttractionCost: 800,
+                tags: ["歷史文化", "美食", "悠閒放鬆", "著名景點"],
+                suitableDays: [1, 2, 3],
+                seasonality: { spring: 9.0 },
+                bestPeriod: "全年皆宜，從因斯布魯克出發僅需 1.5 小時，極適合週末一日遊或快閃",
+                notes: "因斯布魯克後花園，火車班次極多，德國國立博物館均有學生票。",
+                studentPerks: [
+                    "🎓 德意志博物館 (Deutsches Museum) 享學生半價優惠",
+                    "🎓 寶馬博物館 (BMW Museum) 憑學生證折扣"
+                ]
+            },
+            {
+                id: "Prague",
+                name: "布拉格",
+                country: "捷克",
+                transportType: "RegioJet / FlixBus",
+                transportCost: 1800,
+                avgHotelPerNight: 1600,
+                avgFoodPerDay: 800,
+                mainAttractionCost: 600,
+                tags: ["歷史文化", "著名景點", "悠閒放鬆", "美食"],
+                suitableDays: [3, 4, 5],
+                seasonality: { spring: 9.5 },
+                bestPeriod: "3-5月 物價極低，東歐童話古堡春季氣候最爽朗",
+                notes: "交換生超高 CP 值首選！物價比奧地利便宜許多。",
+                studentPerks: [
+                    "🎓 布拉格城堡區聯票 享學生 5 折優惠",
+                    "🎓 國家博物館與慕夏博物館 享學生特惠票"
+                ]
+            },
+            {
+                id: "Vienna",
+                name: "維也納",
+                country: "奧地利",
+                transportType: "ÖBB Railjet 直達火車",
+                transportCost: 1200,
+                avgHotelPerNight: 2200,
+                avgFoodPerDay: 1300,
+                mainAttractionCost: 1000,
+                tags: ["歷史文化", "著名景點", "城市購物"],
+                suitableDays: [2, 3, 4],
+                seasonality: { spring: 9.0 },
+                bestPeriod: "2-5月 奧地利首都文化巡禮，鐵路直達方便",
+                notes: "奧地利境內旅行，持 ÖBB Vorteilscard 買車票享半價！",
+                studentPerks: [
+                    "🎓 藝術史博物館 (KHM) 享學生優惠票",
+                    "🎓 熊布朗宮 (美泉宮) 學生專屬優惠套票"
+                ]
+            },
+            {
+                id: "Rome",
+                name: "羅馬",
+                country: "義大利",
+                transportType: "廉價航空 / 鐵路",
+                transportCost: 3800,
+                avgHotelPerNight: 2400,
+                avgFoodPerDay: 1300,
+                mainAttractionCost: 300, // 歐盟學生 €2 優惠
+                tags: ["歷史文化", "著名景點", "美食"],
+                suitableDays: [4, 5, 6, 7],
+                seasonality: { spring: 9.5 },
+                bestPeriod: "3-5月 春季氣候宜人，避開夏季 40 度酷暑",
+                notes: "歐盟學生證特權超猛！競技場只要 €2 門票！",
+                studentPerks: [
+                    "🎓 羅馬競技場 + 帕拉蒂尼山：歐盟學生 (25歲以下) 票價僅 €2 (原價 €18+)",
+                    "🎓 萬神殿：歐盟學生享 €2 特惠入場",
+                    "🎓 梵蒂岡博物館：憑學生證享折扣票"
+                ]
+            },
+            {
+                id: "Barcelona",
+                name: "巴塞隆納",
+                country: "西班牙",
+                transportType: "廉價航空 (Vueling / RyanAir)",
+                transportCost: 4500,
+                avgHotelPerNight: 2500,
+                avgFoodPerDay: 1300,
+                mainAttractionCost: 1200,
+                tags: ["著名景點", "美食", "悠閒放鬆", "自然"],
+                suitableDays: [4, 5, 6, 7],
+                seasonality: { spring: 9.5 },
+                bestPeriod: "4-6月 地中海暖陽，高第建築與海灘狂歡",
+                notes: "美食與藝術兼具，高第作品均提供學生折扣票。",
+                studentPerks: [
+                    "🎓 聖家堂 (Sagrada Família) 憑學生證折抵門票",
+                    "🎓 巴特婁之家 (Casa Batlló) 享學生折扣",
+                    "🎓 畢卡索博物館 定期免費與學生優惠"
+                ]
+            },
+            {
+                id: "Amsterdam",
+                name: "阿姆斯特丹",
+                country: "荷蘭",
+                transportType: "廉價航空 / 夜車",
+                transportCost: 4200,
+                avgHotelPerNight: 3200,
+                avgFoodPerDay: 1600,
+                mainAttractionCost: 1400,
+                tags: ["著名景點", "歷史文化", "悠閒放鬆"],
+                suitableDays: [3, 4, 5],
+                seasonality: { spring: 10.0 },
+                bestPeriod: "4-5月 庫肯霍夫鬱金香花季，春季最佳目的地！",
+                notes: "春季花海絕不可錯過，運河遊船與博物館備受推崇。",
+                studentPerks: [
+                    "🎓 梵谷博物館 (Van Gogh Museum) 學生優惠",
+                    "🎓 國家博物館 (Rijksmuseum) 學生特惠"
+                ]
+            },
+            {
+                id: "Zurich",
+                name: "蘇黎世",
+                country: "瑞士",
+                transportType: "ÖBB/SBB 直達火車 (僅3.5小時)",
+                transportCost: 2000,
+                avgHotelPerNight: 4500,
+                avgFoodPerDay: 2500,
+                mainAttractionCost: 1200,
+                tags: ["自然", "悠閒放鬆", "著名景點"],
+                suitableDays: [2, 3, 4],
+                seasonality: { spring: 8.5 },
+                bestPeriod: "4-6月 阿爾卑斯山湖光山色，直達車便利",
+                notes: "消費極高，但交通距離近，適合搭配學生票或外食自理節省預算。",
+                studentPerks: [
+                    "🎓 瑞士國家博物館 享學生優惠票",
+                    "🎓 蘇黎世美術館 (Kunsthaus) 學生票折扣"
+                ]
+            },
+            {
+                id: "Budapest",
+                name: "布達佩斯",
+                country: "匈牙利",
+                transportType: "FlixBus / ÖBB 直達火車",
+                transportCost: 1800,
+                avgHotelPerNight: 1500,
+                avgFoodPerDay: 800,
+                mainAttractionCost: 600,
+                tags: ["歷史文化", "悠閒放鬆", "美食", "著名景點"],
+                suitableDays: [3, 4, 5],
+                seasonality: { spring: 9.5 },
+                bestPeriod: "3-5月 多瑙河夜景與泡湯，CP 值天花板",
+                notes: "東歐雙姝之一，溫泉夜巴與國會大廈夜景必去！",
+                studentPerks: [
+                    "🎓 塞車紐溫泉 (Széchenyi) 享學生優惠門票",
+                    "🎓 匈牙利國會大廈 歐盟學生證享半價"
+                ]
+            },
+            {
+                id: "Florence",
+                name: "佛羅倫斯",
+                country: "義大利",
+                transportType: "ÖBB 直達夜車 / 火車",
+                transportCost: 2800,
+                avgHotelPerNight: 2300,
+                avgFoodPerDay: 1300,
+                mainAttractionCost: 300, // 歐盟學生 €2
+                tags: ["歷史文化", "著名景點", "美食"],
+                suitableDays: [3, 4, 5],
+                seasonality: { spring: 9.0 },
+                bestPeriod: "3-5月 文藝復興搖籃，氣候清爽",
+                notes: "烏菲茲美術館與學院美術館，歐盟學生均只需 €2 門票！",
+                studentPerks: [
+                    "🎓 烏菲茲美術館 (Uffizi)：歐盟學生 (25歲以下) 門票僅 €2",
+                    "🎓 學院美術館 (大衛像)：歐盟學生僅 €2 門票"
+                ]
+            }
+        ];
+
+        // Core recommendation calculation function
+        function calculateRecommendations() {
+            const budgetRange = document.getElementById("budget").value;
+            const daysRange = document.getElementById("days").value;
+            const mustVisit = document.getElementById("mustVisitCity").value;
+            const selectedPrefs = Array.from(document.querySelectorAll('.pref-checkbox:checked')).map(cb => cb.value);
+            
+            let transportPref = "平衡";
+            const checkedTransport = document.querySelector('input[name="transport"]:checked');
+            if (checkedTransport) transportPref = checkedTransport.value;
+
+            const classDays = parseInt(document.getElementById("classDays").value) || 2;
+
+            // Parse budget limits
+            let userMaxBudget = 25000;
+            if (budgetRange === "10000-20000") userMaxBudget = 20000;
+            else if (budgetRange === "20000-30000") userMaxBudget = 30000;
+            else if (budgetRange === "30000-40000") userMaxBudget = 40000;
+            else userMaxBudget = 60000;
+
+            // Parse target days
+            let targetDays = 3;
+            if (daysRange === "1-2") targetDays = 2;
+            else if (daysRange === "3-4") targetDays = 4;
+            else if (daysRange === "5-7") targetDays = 6;
+            else targetDays = 8;
+
+            const scoredCities = cityDatabase.map(city => {
+                const stayNights = Math.max(1, targetDays - 1);
+                const estimatedCost = city.transportCost + (city.avgHotelPerNight + city.avgFoodPerDay) * stayNights + city.mainAttractionCost;
+
+                // A. Budget Match Score (30%)
+                let budgetScore = 100;
+                if (estimatedCost > userMaxBudget) {
+                    const diffRatio = (estimatedCost - userMaxBudget) / userMaxBudget;
+                    budgetScore = Math.max(0, 100 - diffRatio * 220);
+                }
+
+                // B. Academic Fit Score (20%)
+                let academicScore = 85;
+                if (targetDays <= 2) academicScore = 100;
+                else if (targetDays <= 4) academicScore = (classDays <= 3) ? 95 : 70;
+                else academicScore = (classDays <= 2) ? 90 : 60;
+
+                // C. Transport Score (15%)
+                let transportScore = 75;
+                const isDirect = city.transportType.includes("直達");
+                if (transportPref === "省錢優先") {
+                    transportScore = city.transportCost < 2000 ? 100 : (city.transportCost < 3500 ? 75 : 50);
+                } else if (transportPref === "時間優先") {
+                    transportScore = isDirect ? 100 : 65;
+                } else {
+                    transportScore = isDirect ? 95 : (city.transportCost < 3000 ? 80 : 65);
+                }
+
+                // D. Preferences Score (20%)
+                let interestScore = 60;
+                if (selectedPrefs.length > 0) {
+                    const matchCount = selectedPrefs.filter(p => city.tags.includes(p)).length;
+                    interestScore = Math.min(100, (matchCount / selectedPrefs.length) * 100 + 20);
+                }
+
+                // E. Suitable Days & Seasonality (15%)
+                let dayScore = city.suitableDays.includes(targetDays) ? 100 : 70;
+
+                const totalScore = Math.round(
+                    budgetScore * 0.30 +
+                    academicScore * 0.20 +
+                    transportScore * 0.15 +
+                    interestScore * 0.20 +
+                    dayScore * 0.15
+                );
+
+                return {
+                    ...city,
+                    score: totalScore,
+                    estimatedCost,
+                    targetDays
+                };
+            });
+
+            // Sort cities by score descending
+            scoredCities.sort((a, b) => b.score - a.score);
+
+            // Get Top 5 Destinations
+            const top5 = scoredCities.slice(0, 5);
+            const top5Ids = top5.map(c => c.id);
+
+            // Render Results & Must-Visit Gap Analysis
+            renderGapAnalysis(mustVisit, scoredCities, top5Ids, userMaxBudget, targetDays);
+            renderTop5Results(top5, mustVisit);
+        }
+
+        // Render Must-Visit City Displaced Alert (Gap Analysis)
+        function renderGapAnalysis(mustVisitId, scoredCities, top5Ids, userMaxBudget, targetDays) {
+            const gapContainer = document.getElementById("mustVisitGapContainer");
+            gapContainer.innerHTML = "";
+
+            if (!mustVisitId) return;
+
+            const selectedCity = scoredCities.find(c => c.id === mustVisitId);
+            if (!selectedCity) return;
+
+            const isMatchedInTop5 = top5Ids.includes(mustVisitId);
+
+            if (!isMatchedInTop5) {
+                const budgetDiff = selectedCity.estimatedCost - userMaxBudget;
+                const minRecDays = Math.min(...selectedCity.suitableDays);
+                const dayDiff = minRecDays - targetDays;
+
+                let gapTips = [];
+                if (budgetDiff > 0) {
+                    gapTips.push(`💰 <b>預算落差：</b>預估花費比您的設定預算多出 <b>NT$ ${budgetDiff.toLocaleString()}</b> 元 (建議選擇廉航/夜巴或調整預算)`);
+                } else {
+                    gapTips.push(`✅ <b>預算充裕：</b>預估 NT$ ${selectedCity.estimatedCost.toLocaleString()} 元，符合您的預算需求`);
+                }
+
+                if (dayDiff > 0) {
+                    gapTips.push(`⏱️ <b>天數建議：</b>此城市建議至少安排 <b>${minRecDays} 天</b>深度遊覽 (您目前設定 ${targetDays} 天)`);
+                } else {
+                    gapTips.push(`✅ <b>天數充足：</b>規劃 ${targetDays} 天適合深度體驗該城市`);
+                }
+
+                gapContainer.innerHTML = `
+                    <div class="bg-amber-50/90 border-2 border-amber-300/80 rounded-2xl p-5 shadow-sm space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-1 bg-amber-500 text-white font-extrabold text-xs rounded-lg shadow-sm">必去城市專屬分析</span>
+                                <h3 class="text-base font-bold text-amber-950">${selectedCity.name} (${selectedCity.country})</h3>
+                            </div>
+                            <span class="text-xs text-amber-700 font-semibold">未列入 TOP 5 推薦</span>
+                        </div>
+                        <p class="text-xs text-amber-900 leading-relaxed">
+                            您選擇的必去城市「<b>${selectedCity.name}</b>」目前綜合推薦得分為 <b>${selectedCity.score} 分</b>，以下為條件落差分析與建議：
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <div class="bg-white p-2.5 rounded-xl border border-amber-200/60">
+                                <span class="text-slate-400 block">預估總花費</span>
+                                <span class="font-bold text-slate-800">NT$ ${selectedCity.estimatedCost.toLocaleString()}</span>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-amber-200/60">
+                                <span class="text-slate-400 block">建議出遊天數</span>
+                                <span class="font-bold text-slate-800">${minRecDays} 天以上</span>
+                            </div>
+                        </div>
+                        <div class="bg-amber-100/60 p-3 rounded-xl space-y-1.5 text-xs text-amber-900">
+                            ${gapTips.map(tip => `<p class="flex items-start gap-1"><span>•</span><span>${tip}</span></p>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Render Top 5 Recommendation Cards
+        function renderTop5Results(topCities, mustVisitId) {
+            document.getElementById("welcomeMessage").classList.add("hidden");
+            const container = document.getElementById("resultsContainer");
+            const cardsList = document.getElementById("cardsList");
+            cardsList.innerHTML = "";
+            container.classList.remove("hidden");
+
+            topCities.forEach((city, index) => {
+                const isMustVisitMatched = (city.id === mustVisitId);
+                const stayNights = Math.max(1, city.targetDays - 1);
+
+                const transFee = city.transportCost;
+                const hotelFee = city.avgHotelPerNight * stayNights;
+                const foodFee = city.avgFoodPerDay * stayNights;
+                const spotFee = city.mainAttractionCost;
+
+                const rankBadges = [
+                    "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-amber-500/25", 
+                    "bg-gradient-to-r from-slate-500 to-slate-600 text-white shadow-slate-500/25", 
+                    "bg-gradient-to-r from-amber-700 to-amber-800 text-white shadow-amber-800/25",
+                    "bg-slate-700 text-white",
+                    "bg-slate-700 text-white"
+                ];
+
+                const perksList = city.studentPerks ? city.studentPerks.map(p => `<li class="text-xs text-indigo-950 flex items-start gap-1"><span>•</span><span>${p}</span></li>`).join('') : '';
+
+                const cardHtml = `
+                    <div class="bg-white rounded-2xl p-6 border ${isMustVisitMatched ? 'border-2 border-rose-400 shadow-md' : 'border-slate-200/80 shadow-sm'} relative space-y-4 hover:shadow-md transition">
+                        
+                        <!-- Header & Badges -->
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <span class="${rankBadges[index]} text-xs font-black px-3 py-1.5 rounded-xl shadow-md">
+                                    TOP ${index + 1}
+                                </span>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h3 class="text-xl font-extrabold text-slate-900">${city.name}</h3>
+                                        ${isMustVisitMatched ? `<span class="px-2 py-0.5 bg-rose-100 text-rose-700 text-[10px] font-bold rounded-md animate-pulse">🔥 必去城市完全匹配</span>` : ''}
+                                    </div>
+                                    <span class="text-xs font-medium text-slate-500 flex items-center gap-1 mt-0.5">
+                                        <i class="fa-solid fa-location-dot text-brand-500"></i> ${city.country}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="text-right bg-brand-50/80 border border-brand-100 px-3 py-1.5 rounded-xl">
+                                <div class="text-2xl font-black text-brand-600 leading-none">${city.score}<span class="text-xs font-normal text-slate-400">/100</span></div>
+                                <div class="text-[10px] font-bold text-brand-700 uppercase tracking-wider mt-0.5">匹配分數</div>
+                            </div>
+                        </div>
+
+                        <!-- Highlights Banner -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 p-3.5 bg-slate-50/90 rounded-xl text-xs border border-slate-100">
+                            <div>
+                                <span class="text-slate-400 block font-medium">建議旅行天數</span>
+                                <span class="font-bold text-slate-800 text-sm">${city.targetDays} 天 (${stayNights} 晚)</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block font-medium">預估總花費</span>
+                                <span class="font-bold text-emerald-600 text-sm">約 NT$ ${city.estimatedCost.toLocaleString()}</span>
+                            </div>
+                            <div class="col-span-2 md:col-span-1">
+                                <span class="text-slate-400 block font-medium">主要交通方式</span>
+                                <span class="font-bold text-slate-800 text-xs truncate block">${city.transportType}</span>
+                            </div>
+                        </div>
+
+                        <!-- Recommendations & Best Period -->
+                        <div class="space-y-2 text-xs sm:text-sm">
+                            <p class="text-slate-700 leading-relaxed">
+                                <strong class="text-slate-900 font-bold"><i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i>推薦亮點：</strong>
+                                ${city.notes}
+                            </p>
+                            <p class="text-slate-700 leading-relaxed">
+                                <strong class="text-slate-900 font-bold"><i class="fa-solid fa-calendar-day text-brand-500 mr-1.5"></i>最佳出遊時機：</strong>
+                                ${city.bestPeriod}
+                            </p>
+                        </div>
+
+                        <!-- EU Student Card Perks Module -->
+                        ${city.studentPerks ? `
+                            <div class="bg-indigo-50/70 border border-indigo-100 rounded-xl p-3.5 space-y-1.5">
+                                <div class="flex items-center gap-1.5 text-xs font-bold text-indigo-900">
+                                    <i class="fa-solid fa-graduation-cap text-indigo-600"></i>
+                                    <span>歐盟學生證獨享特權 (持 UIBK 學生證即可)</span>
+                                </div>
+                                <ul class="space-y-1">
+                                    ${perksList}
+                                </ul>
+                            </div>
+                        ` : ''}
+
+                        <!-- Fee Breakdown Details Toggle -->
+                        <details class="text-xs group">
+                            <summary class="cursor-pointer font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1 select-none pt-1">
+                                <i class="fa-solid fa-calculator"></i>
+                                <span>檢視估算費用細項 (NTD)</span>
+                                <i class="fa-solid fa-chevron-down text-[10px] transition-transform group-open:rotate-180 ml-1"></i>
+                            </summary>
+                            <div class="mt-3 p-3 bg-slate-100/80 rounded-xl grid grid-cols-2 sm:grid-cols-4 gap-2 text-center border border-slate-200/60">
+                                <div class="bg-white p-2 rounded-lg border border-slate-100">
+                                    <div class="text-slate-400 text-[10px]">來回交通估算</div>
+                                    <div class="font-bold text-slate-800 mt-0.5">NT$ ${transFee.toLocaleString()}</div>
+                                </div>
+                                <div class="bg-white p-2 rounded-lg border border-slate-100">
+                                    <div class="text-slate-400 text-[10px]">住宿估算</div>
+                                    <div class="font-bold text-slate-800 mt-0.5">NT$ ${hotelFee.toLocaleString()}</div>
+                                </div>
+                                <div class="bg-white p-2 rounded-lg border border-slate-100">
+                                    <div class="text-slate-400 text-[10px]">餐飲估算</div>
+                                    <div class="font-bold text-slate-800 mt-0.5">NT$ ${foodFee.toLocaleString()}</div>
+                                </div>
+                                <div class="bg-white p-2 rounded-lg border border-slate-100">
+                                    <div class="text-slate-400 text-[10px]">門票景點</div>
+                                    <div class="font-bold text-slate-800 mt-0.5">NT$ ${spotFee.toLocaleString()}</div>
+                                </div>
+                            </div>
+                        </details>
+
+                        <!-- UK ETA Notice if Applicable -->
+                        ${city.isUK ? `
+                            <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-start gap-2.5">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-600 text-sm mt-0.5 shrink-0"></i>
+                                <div class="space-y-1">
+                                    <div class="font-bold">英國入境與簽證注意事項 (非申根區)</div>
+                                    <div class="text-amber-800 leading-normal">
+                                        倫敦非申根區，出發前請確認攜帶護照並於 GOV.UK 官網提早申請 <b>UK ETA 電子許可</b>。
+                                    </div>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                    </div>
+                `;
+                cardsList.innerHTML += cardHtml;
+            });
+        }
+    </script>
+</body>
+</html>
